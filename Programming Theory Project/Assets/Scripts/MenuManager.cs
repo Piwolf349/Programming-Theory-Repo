@@ -18,6 +18,7 @@ public class MenuManager : MonoBehaviour
     public void SetPlayerName()
     {
         playerName = inputField.GetComponent<TMP_InputField>().text;
+        Debug.Log(playerName);
     }
 
     public void StartNew()
