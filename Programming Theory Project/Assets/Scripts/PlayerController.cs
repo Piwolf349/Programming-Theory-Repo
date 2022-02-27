@@ -12,9 +12,6 @@ public class PlayerController : MonoBehaviour
     private float powerupStrength = 15.0f;
     public GameObject powerupIndicator;
 
-    public bool gameOver = false;
-    private float lowerBound = -10.0f;
-
     public GameObject missile;
     public bool hasPowerupMissile = false;
     public Rigidbody missileRB;
@@ -65,6 +62,7 @@ public class PlayerController : MonoBehaviour
             for(int i = 0; i < (enemies.Length - missiles.Length); i++)
             {
                 Instantiate(missile, ((enemies[i].transform.position + transform.position)/2 + transform.position)/2, missile.transform.rotation); // 
+
             }
         }
 
@@ -76,14 +74,6 @@ public class PlayerController : MonoBehaviour
 
             isOnGround = false;
             StartCoroutine(ShockwaveFallCountdown());
-        }
-
-
-
-        //Game Over stops enemies from spawning
-        if (transform.position.y < lowerBound)
-        {
-            gameOver = true;
         }
 
     }

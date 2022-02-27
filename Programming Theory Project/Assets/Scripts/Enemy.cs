@@ -4,38 +4,35 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    private float m_speed;
-    public float speed
+    public float m_speed = 3.0f;
+    public float speed //ENCAPSULATION
     {
         get { return m_speed; }
         set
         {
-            if(value<0.0f)
+            if (value < 0.0f)
             {
-                Debug.LogError("need a positive value for speed");
+                Debug.LogError("A positive value is required");
             }
             else
             {
-                m_speed = value;
+                m_speed = 3.0f;
             }
         }
-
-            
     }
     private Rigidbody enemyRB;
     private GameObject player;
     private float boundary = 20.0f;
-    // Start is called before the first frame update
+
     void Start()
     {
-        //Abstracion example
+        //ABSTRACTION 
         GetData();
     }
 
-    // Update is called once per frame
     void Update()
     {
-        //Other abstraction example
+        //ABSTRACTION
         RushToPlayer();
     }
 

@@ -1,31 +1,29 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class SpawnManager : MonoBehaviour
 {
     public TMP_Text scoreText;
-    public GameObject GameOverText;
-    public GameObject RestartButton;
+    public GameObject gameOverText;
+    public GameObject restartButton;
+
     public GameObject[] enemyPrefabs;
     public GameObject[] powerupPrefabs;
     public GameObject boss;
-    private Transform playerTransform;
     private float spawnRange = 9;
     private int enemyCount;
     private int waveNumber = 1;
-    private bool gameOver = false;
+
+    private Transform playerTransform;
     private float lowerBound = -10.0f;
+
     private int bossWave = 5;
     private int bossCount;
 
-    //Inheritance is managed with the enemy class managing both GreenBall and RedBall scripts
-    //Polymorphism is done with GreenBall and RedBall who give a different speed.
-    //Encapsulation (protecting data): TBD, ptet en rajoutant un menu où le joueur ajoute son nom ? Et on le get?
-    //Abstraction is done in the Enemy script whitin the start and update functions
     
     // Start is called before the first frame update
     void Start()
@@ -44,18 +42,19 @@ public class SpawnManager : MonoBehaviour
     }
 
 
+
     void DefineWaveTypeAndSpawn()
     {
         UpdateScore();
         enemyCount = FindObjectsOfType<Enemy>().Length;
         bossCount = FindObjectsOfType<BossScript>().Length;
 
-        if (enemyCount == 0 && waveNumber != bossWave && !gameOver && bossCount == 0)
+        if (enemyCount == 0 && waveNumber != bossWave && bossCount == 0)
         {
             SpawnEnemyWave(waveNumber);
             waveNumber++;
         }
-        else if (enemyCount == 0 && waveNumber == bossWave && !gameOver)
+        else if (enemyCount == 0 && waveNumber == bossWave)
         {
             SpawnBossWave();
             waveNumber++;
@@ -63,13 +62,13 @@ public class SpawnManager : MonoBehaviour
     }
     void UpdateScore()
     {
-        scoreText.text = MenuManager.playerName + "'s score : " + (waveNumber-1);
+        scoreText.text = MenuManager.playerName + "'s score : " + (waveNumber - 1);
     }
+
     void SpawnBossWave()
     {
         Instantiate(boss, new Vector3(0, 1.37f, 0), boss.transform.rotation);
     }
-
 
     void SpawnEnemyWave(int enemiesToSpawn)
     {
@@ -81,7 +80,6 @@ public class SpawnManager : MonoBehaviour
 
         int indexPowerup = Random.Range(0, powerupPrefabs.Length);
         Instantiate(powerupPrefabs[indexPowerup], GenerateSpawnPosition(), powerupPrefabs[indexPowerup].transform.rotation);
-
     }
 
 
@@ -95,17 +93,17 @@ public class SpawnManager : MonoBehaviour
         return randomPos;
     }       
 
+    public void GameOver()
+    {
+        gameOverText.SetActive(true);
+        restartButton.SetActive(true);
+        Time.timeScale = 0;
+    }
+
     public void Restart()
     {
         SceneManager.LoadScene(1);
         Time.timeScale = 1;
-    }
-    
-    void GameOver()
-    {
-        Time.timeScale = 0;
-        GameOverText.SetActive(true);
-        RestartButton.SetActive(true);
     }
 
 }
